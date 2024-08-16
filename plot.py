@@ -19,6 +19,11 @@ def plot_csv(file_path, output_path):
         print(f"Columns 'timestamp' or 'accel_trans' are missing in {file_path}. Skipping.")
         return
     
+    # Normalize the timestamps to range from 0 to 60 seconds
+    min_timestamp = df['timestamp'].min()
+    max_timestamp = df['timestamp'].max()
+    df['timestamp'] = 60 * (df['timestamp'] - min_timestamp) / (max_timestamp - min_timestamp)
+    
     # Plotting the data
     plt.figure(figsize=(15, 7))
     plt.plot(df['timestamp'], df['accel_trans'], label='Transverse Acceleration', alpha=0.5, color='#ff7f0e')
