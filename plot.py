@@ -1,0 +1,44 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+# Define the input and output directories
+input_folder = "downsampled_csv_files/"
+output_folder = "images/"
+
+# Create the output folder if it doesn't exist
+os.makedirs(output_folder, exist_ok=True)
+
+# Function to plot and save CSV files
+def plot_csv(file_path, output_path):
+    # Load the data
+    df = pd.read_csv(file_path, delimiter=';')
+    
+    # Check if necessary columns exist
+    if 'timestamp' not in df.columns or 'accel_trans' not in df.columns:
+        print(f"Columns 'timestamp' or 'accel_trans' are missing in {file_path}. Skipping.")
+        return
+    
+    # Plotting the data
+    plt.figure(figsize=(15, 7))
+    plt.plot(df['timestamp'], df['accel_trans'], label='Transverse Acceleration', alpha=0.5, color='#ff7f0e')
+    
+    # Add labels and legend
+    plt.xlabel('Timestamp (seconds)')
+    plt.ylabel('Acceleration (m/s²)')
+    plt.legend(loc='upper left')
+    
+    # Save the plot as an image
+    plt.title(os.path.basename(file_path))  # Use the file name as the title
+    plt.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved plot to {output_path}")
+
+# Iterate through CSV files in the input folder
+for file_name in os.listdir(input_folder):
+    if file_name.endswith('.csv'):
+        file_path = os.path.join(input_folder, file_name)
+        output_path = os.path.join(output_folder, f"{os.path.splitext(file_name)[0]}.png")
+        plot_csv(file_path, output_path)
+
+print("All plots have been generated and saved.")
