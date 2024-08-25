@@ -46,7 +46,7 @@ def plot_csv(file_path, output_path, lane_change_seconds):
     
     # Draw lines based on the lane change seconds
     for second in lane_change_seconds:
-        plt.axvline(x=second, color='r', linestyle='--')
+        plt.axvline(x=second, color='g',linewidth=0.5, linestyle='--')
     
     # Add labels and legend
     plt.xlabel('Timestamp (seconds)')
