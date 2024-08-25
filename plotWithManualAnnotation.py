@@ -2,15 +2,27 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-# Define the input and output directories
-input_folder = "downsampled_csv_files/"
-lane_change_file = "chunk1.csv"
-output_folder = "images/"
+# Define the base path
+base_path = 'Chunks/Chunk_1/manually-annotated/'
+csv_files_path= 'manually_annotated_chunks/'
 
-# Create the output folder if it doesn't exist
-os.makedirs(output_folder, exist_ok=True)
+# Define the input and output directories
+input_folders = {
+    'lane-change-csv': os.path.join(base_path, 'lane-change-csv'),
+    'no-lane-change-csv': os.path.join(base_path, 'no-lane-change-csv')
+}
+
+output_folders = {
+    'lane-change-csv': os.path.join(base_path, 'lane-change-images'),
+    'no-lane-change-csv': os.path.join(base_path, 'no-lane-change-images')
+}
+
+# Create the output folders if they don't exist
+for folder in output_folders.values():
+    os.makedirs(folder, exist_ok=True)
 
 # Read the lane change data
+lane_change_file = os.path.join(csv_files_path, "chunk1.csv")
 lane_change_data = pd.read_csv(lane_change_file)
 
 # Function to plot and save CSV files
@@ -47,30 +59,33 @@ def plot_csv(file_path, output_path, lane_change_seconds):
     plt.close()
     print(f"Saved plot to {output_path}")
 
-# Iterate through CSV files in the input folder
-for file_name in os.listdir(input_folder):
-    if file_name.endswith('.csv'):
-        file_path = os.path.join(input_folder, file_name)
-        output_path = os.path.join(output_folder, f"{os.path.splitext(file_name)[0]}.png")
-        
-        # Find the corresponding lane change data row by matching the file name
-        matching_rows = lane_change_data[lane_change_data.iloc[:, 0] == file_name.replace("avg-", "")]
-        if not matching_rows.empty:
-            lane_change_row = matching_rows.iloc[0]
-            lane_change_seconds = []
-            for value in lane_change_row[1:]:
-                if value not in ['', 'TRUE', 'FALSE', '0.0','0']:
-                    try:
-                        second = float(value)
-                        if second != 0:  # Ignore 0 values
-                            lane_change_seconds.append(second)
-                    except ValueError:
-                        pass
+# Iterate through each input folder
+for folder_key, input_folder in input_folders.items():
+    output_folder = output_folders[folder_key]
+    
+    for file_name in os.listdir(input_folder):
+        if file_name.endswith('.csv'):
+            file_path = os.path.join(input_folder, file_name)
+            output_path = os.path.join(output_folder, f"{os.path.splitext(file_name)[0]}.png")
             
-            # Debug statement to print the lane change seconds
-            print(f"File: {file_name}, Lane Change Seconds: {lane_change_seconds}")
-            plot_csv(file_path, output_path, lane_change_seconds)
-        else:
-            print(f"No matching lane change data for {file_name}")
+            # Find the corresponding lane change data row by matching the file name
+            matching_rows = lane_change_data[lane_change_data.iloc[:, 0] == file_name.replace("avg-", "")]
+            if not matching_rows.empty:
+                lane_change_row = matching_rows.iloc[0]
+                lane_change_seconds = []
+                for column_name, value in lane_change_row.items():
+                    if column_name != "lane change":
+                        try:
+                            second = float(value)
+                            if second != 0:  # Ignore 0 values
+                                lane_change_seconds.append(second)
+                        except ValueError:
+                            pass
+                
+                #rint the lane change seconds on cmd
+                print(f"File: {file_name}, Lane Change Seconds: {lane_change_seconds}")
+                plot_csv(file_path, output_path, lane_change_seconds)
+            else:
+                print(f"No matching lane change data for {file_name}")
 
 print("All plots have been generated and saved.")

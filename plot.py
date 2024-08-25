@@ -3,8 +3,9 @@ import matplotlib.pyplot as plt
 import os
 
 # Define the input and output directories
-input_folder = "downsampled_csv_files/"
-output_folder = "images/"
+base_path = 'Chunks/Chunk_1'
+input_folder = os.path.join(base_path, "downsampled_csv_files/")
+output_folder = os.path.join(base_path, "images/")
 
 # Create the output folder if it doesn't exist
 os.makedirs(output_folder, exist_ok=True)

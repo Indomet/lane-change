@@ -71,16 +71,21 @@ def downsample_dataframe(df, factor=5):
     return downsampled_df
 
 
-file_3 = "test_data-7.csv" # no need for the timestamp calculation
-file_4 = "combined_segment.csv" # no need for the timestamp calculation
-file_5 = "test_data-10.csv" # no need for the timestamp calculation
-file_6 = "test_data-7b.csv" # no need for the timestamp calculation
-file_7 = "test_data-12b.csv" # no need for the timestamp calculation
-file_8 = "test_data-5b.csv" # no need for the timestamp calculation
-file_9 = "b0c9d2329ad1606b|2018-07-27--06-03-57|3.csv" # no need for the timestamp calculation
+file_3 = "test_data-7.csv" 
+file_4 = "combined_segment.csv"
+file_5 = "test_data-10.csv" 
+file_6 = "test_data-7b.csv" 
+file_7 = "test_data-12b.csv"
+file_8 = "test_data-5b.csv" 
+file_9 = "b0c9d2329ad1606b|2018-07-27--06-03-57|3.csv" 
 
-inp_path = "./raw_csv_files/"
-out_path = "./downsampled_csv_files/"
+base_path = 'Chunks/Chunk_1'
+inp_path = os.path.join(base_path, "raw_csv_files/")
+out_path = os.path.join(base_path, "downsampled_csv_files/")
+
+# Create directories if they do not exist
+
+os.makedirs(out_path, exist_ok=True)
 # df = pd.read_csv(path + file_9, delimiter=';')
 
 # downsampled_df = downsample_dataframe(df, factor=10)
