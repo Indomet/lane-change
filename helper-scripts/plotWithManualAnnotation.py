@@ -78,7 +78,8 @@ for folder_key, input_folder in input_folders.items():
                         try:
                             second = float(value)
                             if second != 0:  # Ignore 0 values
-                                lane_change_seconds.append(second)
+                                #multiplying by 1.25 since the videos are fast forwarded
+                                lane_change_seconds.append(second*1.25)
                         except ValueError:
                             pass
                 
