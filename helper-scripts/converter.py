@@ -12,7 +12,7 @@ combined_t = []
 combined_values = []
 segment_info = []
 
-base_path = 'Chunks/Chunk_1'
+base_path = './Chunks/Chunk_1'
 path = os.path.join(base_path, 'raw_csv_files')
 
 # Create the directory if it does not exist

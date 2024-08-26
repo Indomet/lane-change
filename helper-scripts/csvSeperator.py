@@ -3,7 +3,7 @@ import shutil
 import csv
 
 # Paths
-base_path = 'Chunks/Chunk_1'
+base_path = './Chunks/Chunk_1'
 csv_files_path= 'manually_annotated_chunks/'
 csv_file = os.path.join(csv_files_path, 'chunk1.csv')
 source_folder = os.path.join(base_path, 'downsampled_csv_files')  

@@ -79,7 +79,7 @@ file_7 = "test_data-12b.csv"
 file_8 = "test_data-5b.csv" 
 file_9 = "b0c9d2329ad1606b|2018-07-27--06-03-57|3.csv" 
 
-base_path = 'Chunks/Chunk_1'
+base_path = './Chunks/Chunk_1'
 inp_path = os.path.join(base_path, "raw_csv_files/")
 out_path = os.path.join(base_path, "downsampled_csv_files/")
 

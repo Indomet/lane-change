@@ -10,10 +10,10 @@ def run_script(script_name):
 
 if __name__ == "__main__":
     scripts = [
-        'converter.py',
-        'downsample_commaai_data.py',
-        'csvSeperator.py',
-        'plotWithManualAnnotation.py'
+        'helper-scripts/converter.py',
+        'helper-scripts/downsample_commaai_data.py',
+        'helper-scripts/csvSeperator.py',
+        'helper-scripts/plotWithManualAnnotation.py'
     ]
 
     for script in scripts:

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 
 # Define the base path
-base_path = 'Chunks/Chunk_1/manually-annotated/'
+base_path = './Chunks/Chunk_1/manually-annotated/'
 csv_files_path= 'manually_annotated_chunks/'
 
 # Define the input and output directories
