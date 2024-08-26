@@ -14,6 +14,10 @@ This script processes the raw CSV files by averaging acceleration data over spec
 This script separates the downsampled CSV files into two categories: lane-change and no-lane-change. It reads the downsampled CSV files, gets the information from manually annotated csv about whether a lane change occurred or not and moves the files to the appropriate directories (`lane-change-csv` and `no-lane-change-csv`).
 
 ### `plotWithManualAnnotation.py`
+This script processes CSV files containing lane change data by reading from two folders: one for lane changes and another for no lane changes. It normalizes the time data to start from 0 seconds to accurately represent the timeline and then creates a plot showing the vertical acceleration. Green lines are added to the plot at the moments when lane changes occurred, based on information from a reference CSV file that has been manually annotated (chunk1.csv). The script saves these plots as images in designated folders, ensuring those folders exist beforehand.
+
+
+### `lc_detector.py`
 
 
 ## Running the Scripts
