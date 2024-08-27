@@ -15,13 +15,47 @@ segment_info = []
 base_path = './Chunks/Chunk_1'
 path = os.path.join(base_path, 'raw_csv_files')
 
-# Create the directory if it does not exist
+# accelerationPath = os.path.join(base_path, 'raw_acceleration_csv_files')
+# steeringPath = os.path.join(base_path, 'raw_steering_csv_files')
+# # Create the directory if it does not exist
+# os.makedirs(accelerationPath, exist_ok=True)
+# os.makedirs(steeringPath, exist_ok=True)
+
 os.makedirs(path, exist_ok=True)
+
 # Iterate through each segment directory
 for root, dirs, files in os.walk(base_dir):
     combined_t = []
     combined_values = []
     segment_info = []
+
+    if 'steering_angle' in root and 't' in files and 'value' in files:
+        # Load the time and value data
+        t_data = np.load(os.path.join(root, 't'))
+        value_data = np.load(os.path.join(root, 'value'))
+        
+        # Append the data to the combined lists
+        combined_t.extend(t_data)
+        combined_values.extend(value_data)
+        
+        # Extract the segment number, which is two levels up from the current directory
+        folder_id = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(root)))))
+        segment_number = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(root))))
+ 
+        
+        # Convert the combined lists to numpy arrays
+        combined_t = np.array(combined_t)
+        combined_values = np.array(combined_values)
+
+        df_combined = pd.DataFrame({
+            'timestamp': combined_t,
+            'steering_angle': combined_values
+        })
+
+        file_name = folder_id + '|' + segment_number + '-steering' + '.csv'
+        df_combined.to_csv(os.path.join(path, file_name), sep=';', index=False)
+        print(file_name, ' saved.')
+
     if 'accelerometer' in root and 't' in files and 'value' in files:
         # Load the time and value data
         t_data = np.load(os.path.join(root, 't'))
@@ -47,7 +81,7 @@ for root, dirs, files in os.walk(base_dir):
             'accel_z': combined_values[:, 2]
         })
 
-        file_name = folder_id + '|' + segment_number + '.csv'
+        file_name = folder_id + '|' + segment_number + '-acceleration' +  '.csv'
         df_combined.to_csv(os.path.join(path, file_name), sep=';', index=False)
         print(file_name, ' saved.')
 
