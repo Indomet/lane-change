@@ -16,7 +16,8 @@ def clean_filename(filename):
 base_path = './Chunks/Chunk_1'
 csv_files_path = 'manually_annotated_chunks/'
 csv_file = os.path.join(csv_files_path, 'chunk1.csv')
-source_folder = os.path.join(base_path, 'downsampled_csv_files')
+# source_folder = os.path.join(base_path, 'downsampled_csv_files')
+source_folder = os.path.join(base_path, 'raw_csv_files')
 true_folder = os.path.join(base_path, 'manually-annotated/lane-change-csv')
 false_folder = os.path.join(base_path, 'manually-annotated/no-lane-change-csv')
 

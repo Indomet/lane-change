@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-from scipy.signal import savgol_filter
 
 # Define the base path
 base_path = './Chunks/Chunk_1/manually-annotated/'
@@ -27,31 +26,6 @@ for folder in output_folders.values():
 lane_change_file = os.path.join(csv_files_path, "chunk1.csv")
 lane_change_data = pd.read_csv(lane_change_file)
 
-# Function to apply noise reduction based on steering angle
-def apply_noise_reduction(accel_df, steer_df, window_size=11, polyorder=2, threshold=0.5):
-    accel_df = accel_df.drop_duplicates(subset='timestamp')
-    steer_df = steer_df.drop_duplicates(subset='timestamp')
-
-    steer_df = steer_df.set_index('timestamp').reindex(accel_df['timestamp']).interpolate().reset_index()
-    steer_df['steering_angle_diff'] = steer_df['steering_angle'].diff().fillna(0)
-    significant_steering = np.abs(steer_df['steering_angle_diff']) > threshold
-
-    accel_df['accel_trans_smoothed'] = savgol_filter(accel_df['accel_trans'], window_length=window_size, polyorder=polyorder)
-    accel_df['accel_trans_smoothed'] = np.where(
-        significant_steering,
-        accel_df['accel_trans'],
-        accel_df['accel_trans_smoothed']
-    )
-
-    return accel_df['accel_trans_smoothed']
-
-# Function to adjust transverse acceleration based on steering angle
-def adjust_transverse_acceleration(accel_df, steer_df, correction_factor=0.1):
-    steer_df['steering_angle_normalized'] = steer_df['steering_angle'] - steer_df['steering_angle'].mean()
-    accel_df['accel_trans_adjusted'] = accel_df['accel_trans'] - (steer_df['steering_angle_normalized'] * correction_factor)
-    accel_df['accel_trans_adjusted_smoothed'] = accel_df['accel_trans_adjusted'].rolling(window=5).mean()
-    return accel_df
-
 # Function to plot and save adjusted data with enhanced visuals
 def plot_adjusted_csv(accel_file, steer_file, output_path, lane_change_seconds):
     accel_df = pd.read_csv(accel_file, delimiter=';')
@@ -70,9 +44,8 @@ def plot_adjusted_csv(accel_file, steer_file, output_path, lane_change_seconds):
     accel_df['timestamp'] = 60 * (accel_df['timestamp'] - min_timestamp) / (max_timestamp - min_timestamp)
     steer_df['timestamp'] = 60 * (steer_df['timestamp'] - min_timestamp) / (max_timestamp - min_timestamp)
 
-    accel_df = adjust_transverse_acceleration(accel_df, steer_df)
-
-    steer_df['steering_angle_smoothed'] = steer_df['steering_angle'].rolling(window=5).mean()
+    accel_df['accel_trans_adjusted_smoothed'] = accel_df['accel_trans'].rolling(window=100).mean()
+    steer_df['steering_angle_smoothed'] = steer_df['steering_angle'].rolling(window=100).mean()
 
     fig, ax1 = plt.subplots(figsize=(15, 7))
     ax1.plot(accel_df['timestamp'], accel_df['accel_trans_adjusted_smoothed'], label='Adjusted Transverse Acceleration (Smoothed)', color='#ff7f0e')
