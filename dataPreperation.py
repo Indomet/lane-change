@@ -11,7 +11,7 @@ def run_script(script_name):
 if __name__ == "__main__":
     scripts = [
         'helper-scripts/converter.py',
-        'helper-scripts/downsample_commaai_data.py',
+        # 'helper-scripts/downsample_commaai_data.py',
         'helper-scripts/csvSeperator.py',
         'helper-scripts/plotWithManualAnnotation.py'
     ]

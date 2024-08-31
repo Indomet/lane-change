@@ -4,6 +4,7 @@ from scipy.interpolate import interp1d
 from scipy.stats import norm
 import numpy as np
 import os
+import shutil
 
 def average_over_intervals(df, interval=10):
     """
@@ -102,8 +103,11 @@ segment_info = []
 
 # Iterate through each segment directory
 for filename in os.listdir(inp_path):
-    if filename.endswith('.csv'):
+    if filename.endswith('-acceleration.csv'):
         df = pd.read_csv(inp_path + filename, delimiter=';')
         averaged_df = average_over_intervals(df, interval=10)
         averaged_df.to_csv(os.path.join(out_path, 'avg-' + filename), sep=';', index=False)
         print(filename, ' saved.')
+    elif filename.endswith("-steering.csv"):
+        # Copy the file without downsampling
+        shutil.copy(inp_path +filename, out_path+filename)
