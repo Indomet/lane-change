@@ -44,8 +44,8 @@ def plot_adjusted_csv(accel_file, steer_file, output_path, lane_change_seconds):
     accel_df['timestamp'] = 60 * (accel_df['timestamp'] - min_timestamp) / (max_timestamp - min_timestamp)
     steer_df['timestamp'] = 60 * (steer_df['timestamp'] - min_timestamp) / (max_timestamp - min_timestamp)
 
-    accel_df['accel_trans_adjusted_smoothed'] = accel_df['accel_trans'].rolling(window=100).mean()
-    steer_df['steering_angle_smoothed'] = steer_df['steering_angle'].rolling(window=100).mean()
+    accel_df['accel_trans_adjusted_smoothed'] = accel_df['accel_trans'].rolling(window=100, min_periods=1).mean()
+    steer_df['steering_angle_smoothed'] = steer_df['steering_angle'].rolling(window=100, min_periods=1).mean()
 
     fig, ax1 = plt.subplots(figsize=(15, 7))
     ax1.plot(accel_df['timestamp'], accel_df['accel_trans_adjusted_smoothed'], label='Adjusted Transverse Acceleration (Smoothed)', color='#ff7f0e')
