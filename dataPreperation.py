@@ -13,6 +13,7 @@ if __name__ == "__main__":
         'helper-scripts/converter.py',
         # 'helper-scripts/downsample_commaai_data.py',
         'helper-scripts/csvSeperator.py',
+        'helper-scripts/timestamp-converter.py',
         'helper-scripts/plotWithManualAnnotation.py'
     ]
 
