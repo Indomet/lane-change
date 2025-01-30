@@ -46,3 +46,9 @@ To run all the scripts in the correct order, you can use the `dataPreperation.py
 
 ```bash
 python3 dataPreperation.py
+```
+
+Related repositories
+https://github.com/Indomet/lane-change
+https://github.com/mckayadd/observing_lane_change_patterns
+https://github.com/mckayadd/clustering_lane_changes
